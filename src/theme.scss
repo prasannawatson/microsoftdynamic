@@ -1,0 +1,520 @@
+@import '~@angular/material/theming';
+
+//imported opens font
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800');
+@include mat-core();
+$light-primary-text: white;
+$dark-primary-text: rgba(black, 0.87);
+$cc-red: (
+  50: #ffebee,
+  100: #ffcdd2,
+  200: #ef9a9a,
+  300: #e57373,
+  400: #ef5350,
+  500: #f44336,
+  600: #e53935,
+  700: #d32f2f,
+  800: #c62828,
+  900: #b71c1c,
+  A100: #ff8a80,
+  A200: #ff5252,
+  A400: #ff1744,
+  A700: #d50000,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text
+  )
+);
+$cc-light-blue: (
+  50: #e1f5fe,
+  100: #b3e5fc,
+  200: #81d4fa,
+  300: #4fc3f7,
+  400: #29b6f6,
+  500: #03a9f4,
+  600: #039be5,
+  700: #0288d1,
+  800: #0277bd,
+  900: #01579b,
+  A100: #80d8ff,
+  A200: #40c4ff,
+  A400: #00b0ff,
+  A700: #0091ea,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: $light-primary-text
+  )
+);
+//theme one
+$cc-theme-one-primary: mat-palette($cc-red, 400, 100, 700);
+$cc-theme-one-accent: mat-palette($mat-blue-grey, 900);
+$cc-theme-one-warn: mat-palette($cc-red, 500, 100, 700);
+$cc-theme-one: mat-light-theme($cc-theme-one-primary, $cc-theme-one-accent, $cc-theme-one-warn);
+
+.cc-theme-spaces {
+  @include angular-material-theme($cc-theme-one);
+  // @include utils-selection-list-multi($cc-theme-one);
+  // @include lego-toolbar-multi($cc-theme-one);
+  // @include space-select-red($cc-theme-one);
+  // @include reset-password-red($cc-theme-one);
+  // @include lfr-profile-red($cc-theme-one);
+
+  .cc-configure-close:hover {
+    $primary: map-get($cc-theme-one, primary);
+    background: mat-color($primary) !important;
+  }
+}
+
+//theme two
+$cc-theme-second-primary: mat-palette($cc-light-blue, 400, 100, 700);
+$cc-theme-second-accent: mat-palette($mat-blue-grey, 900);
+$cc-theme-second-warn: mat-palette($cc-red, 500, 100, 700);
+$cc-theme-second: mat-light-theme($cc-theme-second-primary, $cc-theme-second-accent, $cc-theme-second-warn);
+
+.cc-theme-cx-setup {
+  @include angular-material-theme($cc-theme-second);
+  // @include utils-selection-list-multi($cc-theme-second);
+  // @include delivery-plan-compose-theme-blue($cc-theme-second);
+  // @include delivery-plan-channels-theme-blue($cc-theme-second);
+  // @include integration-blue($cc-theme-second);
+  // @include lego-accordion-blue($cc-theme-second);
+  // @include lego-configure-condition-blue($cc-theme-second);
+  // @include lego-qb-question-search-lookup-library-blue($cc-theme-second);
+  // @include lego-qb-question-type-tile-blue($cc-theme-second);
+  // @include lego-qb-question-tags-blue($cc-theme-second);
+  // @include lego-toolbar-multi($cc-theme-second);
+  // @include lego-qb-questions-panel-blue($cc-theme-second);
+  // @include dp-integration-tile-blue($cc-theme-second);
+  // @include dp-test-run-blue($cc-theme-second);
+  // @include set-conditions-blue($cc-theme-second);
+
+  .cc-configure-close:hover {
+    $primary: map-get($cc-theme-second, primary);
+    background: mat-color($primary) !important;
+  }
+}
+
+//Typography theme
+$custom-typography: mat-typography-config(
+  $font-family: 'Open Sans, sans-serif',
+  $display-1: mat-typography-level(21px, 30px, 700),
+  $headline: mat-typography-level(19px, 28px, 300),
+  $title: mat-typography-level(21px, 30px, 300),
+  $subheading-1: mat-typography-level(12px, 20px, 700),
+  $subheading-2: mat-typography-level(12px, 20px, 400),
+  $body-1: mat-typography-level(14px, 22px, 400),
+  $body-2: mat-typography-level(14px, 22px, 700)
+);
+@include mat-core($custom-typography);
+@include angular-material-typography($custom-typography);
+@include mat-base-typography($custom-typography);
+
+//CC-Typography
+.mat-subheading-1 {
+  text-transform: uppercase;
+}
+
+.italics {
+  font-style: italic;
+}
+
+.warn {
+  color: mat-color($cc-theme-one-warn);
+}
+
+.cc-theme-spaces {
+  //CC-Button
+  .button-s {
+    min-height: 24px;
+    min-width: 40px;
+    line-height: 24px;
+  }
+
+  .button-m {
+    min-height: 36px;
+    min-width: 120px;
+    line-height: 36px;
+  }
+
+  .button-l {
+    min-height: 48px;
+    min-width: 140px;
+    line-height: 48px;
+  }
+
+  .button-menu {
+    min-height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  //menu dropdown-icon
+  .icon::after {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .menu-icon {
+    position: relative;
+
+    &::after {
+      font-family: 'Font Awesome 5 Pro';
+      font-weight: 900;
+      content: '\f0da';
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      -o-transform: rotate(45deg);
+      transform: rotate(45deg);
+      color: #b2b6b9;
+      position: absolute;
+      right: 5px;
+      bottom: 2px;
+      font-size: 17px;
+      line-height: 10px;
+    }
+  }
+
+  [mat-raised-button] {
+    text-transform: uppercase;
+    font-weight: 600; // &.mat-primary {
+
+    //   color: #ffffff;
+    // } //spinner
+    mat-spinner {
+      margin: auto;
+
+      circle {
+        stroke: #ffffff !important;
+      }
+    }
+  }
+
+  [mat-button],
+  [mat-stroked-button] {
+    font-weight: 600;
+  }
+
+  //cc-chips
+  .chips-ui {
+    mat-chip {
+      height: 24px;
+    }
+  }
+
+  .mat-tooltip {
+    max-width: 200px;
+  }
+
+  //table UI
+  .table-dropshadow {
+    box-shadow: 2px 2px 10px #e7e7e7;
+  }
+
+  //dialog UI
+  mat-dialog-container {
+    min-width: 480px;
+    padding: 20px;
+    max-height: 480px;
+    box-sizing: border-box;
+  }
+
+  [matDialogTitle] {
+    margin-bottom: 20px;
+    max-height: 180px;
+    overflow: auto;
+  }
+
+  [mat-dialog-content] {
+    margin: 0;
+    min-height: 70px;
+    overflow: auto;
+    padding: 0;
+  }
+
+  [mat-dialog-actions] {
+    margin: 20px 0px 0px 0px;
+    align-items: center;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      margin-left: auto;
+    }
+  }
+
+  //Tooltip
+  .text-overflow {
+    max-width: 240px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  //a tag  styles
+  a {
+    text-decoration: none;
+    color: #29b6f6;
+  }
+
+  .mat-menu-label {
+    padding: 0 8px;
+    display: block;
+    height: 36px;
+    line-height: 36px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: Open Sans;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .mat-slide-toggle {
+    width: 100%;
+
+    & > label {
+      justify-content: space-between;
+    }
+  }
+
+  .snack-curved {
+    height: 48px;
+    padding: 4px 24px;
+    text-align: center;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .cc-snack-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cc-snack-bar-error.mat-snack-bar-container {
+    @extend .snack-curved;
+    @extend .cc-snack-layout;
+    background-color: #f26e6e;
+    color: #ffffff;
+  }
+
+  .cc-snack-bar-info.mat-snack-bar-container {
+    @extend .snack-curved;
+    @extend .cc-snack-layout;
+    background-color: #d0d8dd;
+    color: #424242;
+  }
+
+  .cc-snack-bar-success.mat-snack-bar-container {
+    @extend .snack-curved;
+    @extend .cc-snack-layout;
+    background-color: #6dc69a;
+    color: #ffffff;
+  }
+
+  .cc-snack-bar-dark.mat-snack-bar-container {
+    @extend .snack-curved;
+    @extend .cc-snack-layout;
+    background-color: #666666;
+    color: #ffffff;
+  }
+
+  .title-text {
+    font-size: 27px;
+    color: #424242;
+  }
+
+  .primary-cta {
+    width: 180px;
+  }
+
+  .primary-text {
+    color: #424242;
+    font-size: 14px;
+  }
+
+  .secondary-text {
+    color: #a7a7a7;
+    font-size: 12px;
+  }
+
+  .light {
+    font-weight: 300;
+  }
+
+  .normal {
+    font-weight: 400;
+  }
+
+  .bold {
+    font-weight: 500;
+  }
+
+  .extra-bold {
+    font-weight: 600;
+  }
+
+  .ultra-bold {
+    font-weight: 700;
+  }
+
+  .label-text {
+    font-size: 12px;
+    color: #000000;
+    text-transform: uppercase;
+  }
+
+  .mat-chip {
+    font-weight: 400;
+  }
+
+  // override bootstrap
+  label.mat-radio-label {
+    font-weight: 400;
+    margin-bottom: 0;
+  }
+}
+
+.cc-theme-cx-setup {
+  @extend .cc-theme-spaces;
+}
+
+.cc-theme-spaces {
+  [mat-menu-item] {
+    font-family: Open Sans !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: $dark-primary-text;
+
+    &.active,
+    &:hover:not([disabled]) {
+      color: mat-color($cc-theme-one-primary);
+    }
+  }
+
+  .left-nav-item {
+    &.active,
+    &:hover {
+      background-color: mat-color($cc-theme-one-primary);
+    }
+
+    color: white;
+  }
+}
+
+.cc-theme-cx-setup {
+  [mat-menu-item] {
+    font-family: Open Sans !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: $dark-primary-text;
+
+    &.active,
+    &:hover:not([disabled]) {
+      color: mat-color($cc-theme-second-primary);
+    }
+  }
+
+  .left-nav-item {
+    &.active,
+    &:hover {
+      background-color: mat-color($cc-theme-second-primary);
+    }
+
+    color: white;
+  }
+}
+
+.is-pinned::after {
+  content: '\f08d';
+  font-family: 'Font Awesome 5 Pro';
+  font-size: 12px;
+  position: absolute;
+  right: 8px;
+}
+
+.mat-other-menu-item {
+  padding: 0 16px;
+}
+
+.cc-bottom-sheet-warning {
+  background-color: mat-color($cc-theme-one-warn) !important;
+  color: #ffffff !important;
+}
+
+.cc-bottom-sheet-information {
+  background-color: mat-color($cc-theme-second-primary) !important;
+  color: #ffffff !important;
+}
+
+.mat-slide-toggle-content {
+  font-weight: 400;
+}
+
+.question-picker-menu [mat-menu-item] {
+  font-size: 13px;
+  padding: 0 10px;
+
+  img {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+  }
+
+  &.active {
+    background: mat-color($cc-theme-second-primary);
+    color: #fff;
+  }
+}
+
+.question-picker-menu .mat-menu-content {
+  padding: 0px;
+}
+
+.question-picker-menu [mat-menu-item]:hover:not([disabled]) {
+  background: mat-color($cc-theme-second-primary);
+  color: #fff;
+}
+
+.error-text {
+  color: mat-color($cc-theme-one-primary);
+}

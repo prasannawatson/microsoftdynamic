@@ -1,0 +1,163 @@
+@mixin typography($font-size: false, $color: false, $font-weight: false, $line-height: false, $text-transform: false, $cursor: false, $font-style: false, $text-decoration: false, $text-align: false) {
+  @if $font-size {
+    font-size: $font-size;
+  }
+  @if $color {
+    color: $color;
+  }
+  @if $font-weight {
+    font-weight: $font-weight;
+  }
+  @if $line-height {
+    line-height: $line-height;
+  }
+  @if $text-transform {
+    text-transform: $text-transform
+  }
+  @if $cursor {
+    cursor: $cursor
+  }
+  @if $font-style {
+    font-style: $font-style
+  }
+  @if $text-decoration {
+    text-decoration: $text-decoration
+  }
+  @if $text-align {
+    text-align: $text-align
+  }
+}
+
+@mixin ellipsis($max-width) {
+  max-width: $max-width;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin ellipsis-twolines($max-width) {
+  max-width: $max-width;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin chevron($color, $direction, $size, $round: false) {
+  @include pseudo($display: block, $position: absolute, $content: '');
+  width: 0;
+  height: 0;
+  @if $round {
+    border-radius: 3px;
+  }
+  @if $direction==down {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-top: $size solid $color;
+    margin-top: 0 - round( $size / 2.5);
+  }
+  @else if $direction==up {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-bottom: $size solid $color;
+    margin-bottom: 0 - round( $size / 2.5);
+  }
+  @else if $direction==right {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-left: $size solid $color;
+    margin-right: -$size;
+  }
+  @else if $direction==left {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-right: $size solid $color;
+    margin-left: -$size;
+  }
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+}
+
+@mixin pseudo($display: block, $position: absolute, $content: '') {
+  content: $content;
+  display: $display;
+  position: $position;
+}
+
+@mixin position($position: false, $top: false, $right: false, $bottom: false, $left: false) {
+  @if $position {
+    position: $position;
+  }
+  @if $top {
+    top: $top;
+  }
+  @if $right {
+    right: $right;
+  }
+  @if $bottom {
+    bottom: $bottom;
+  }
+  @if $left {
+    left: $left;
+  }
+}
+
+$breakpoints: ( "phone": 400px, "phone-wide": 480px, "phablet": 560px, "tablet-small": 640px, "tablet": 768px, "tablet-wide": 1024px, "desktop": 1248px, "desktop-wide": 1440px);
+@mixin screensize($width, $type: min) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width);
+    @if $type==max {
+      $width: $width - 1px;
+    }
+    @media only screen and (#{$type}-width: $width) {
+      @content;
+    }
+  }
+}
+
+@mixin crossbrowser($property, $css) {
+  -webkit-#{$property}: $css;
+  -moz-#{$property}: $css;
+  -o-#{$property}: $css;
+  #{$property}: $css;
+}
+
+@mixin text-formater-fontsize {
+  // assign font size for font tag
+   :host /deep/ font[size='2'] {
+    font-size: $smallest;
+  }
+   :host /deep/ font[size='3'] {
+    font-size: $small;
+  }
+   :host /deep/ font[size='4'] {
+    font-size: $normal;
+  }
+   :host /deep/ font[size='5'] {
+    font-size: $large;
+  }
+}
+
+@mixin interaction-background-images($size, $normal: null, $hover: null, $active: null) {
+  background-size: $size;
+  @if $normal {
+    background-image: $normal;
+  }
+  @if $hover {
+    &:hover {
+      background-image: $hover;
+    }
+  }
+  @if $active {
+    &.active {
+      background-image: $active;
+    }
+  }
+}

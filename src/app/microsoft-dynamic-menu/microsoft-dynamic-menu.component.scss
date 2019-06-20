@@ -1,0 +1,20 @@
+.cc-menu-container {
+    height: calc(100% - 48px);
+    width: 48px;
+    position: fixed;
+    bottom: 0;
+    z-index: 200;
+    background-color: #1c232d;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-menu {
+min-height: 48px;
+min-width: 39px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 0;
+padding: 0;
+}
