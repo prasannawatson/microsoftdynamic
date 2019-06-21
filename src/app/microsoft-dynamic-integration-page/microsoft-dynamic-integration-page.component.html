@@ -1,7 +1,41 @@
 <div class="cx-setup">
-<mat-tab-group>
-    <mat-tab label="First"> </mat-tab>
-    <mat-tab label="Second"> Content 2 </mat-tab>
-    <mat-tab label="Third"> Content 3 </mat-tab>
-  </mat-tab-group>
+    <span class="ng-star-inserted">Integration</span>
+    <p align="right"><button mat-button>Update</button></p>
+    <mat-tab-group>
+        <mat-tab label="Dynamics 365">
+            <div class="">
+                <mat-grid-list cols="2" rowHeight="4:1">
+                    <mat-grid-tile>
+                        <mat-form-field class="form-field">
+                            <input matInput placeholder="https://login.salesforce.com" value="ENVIRONMENT URL" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field class="form-field">
+                            <input matInput placeholder="https://login.salesforce.com" value="ENVIRONMENT URL" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field class="form-field">
+                            <input matInput placeholder="https://login.salesforce.com" value="ENVIRONMENT URL" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field class="form-field">
+                            <input matInput placeholder="Enter ID" value="CLIENT ID" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+        </mat-tab>
+        <mat-tab label="Second"> Content 2 </mat-tab>
+    </mat-tab-group>
+</div>
+<div class="wrap">
+    <div class="integrations-section ng-star-inserted">
+        <div class="col-md-12 col-sm-12 col-xs-12 cc-boxshadow cc-material-form">
+            <mat-tab-group class="mat-tab-group mat-primary">
+            </mat-tab-group>
+        </div>
+    </div>
 </div>
