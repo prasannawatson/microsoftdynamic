@@ -1,28 +1,32 @@
 <div class="cx-setup">
-    <span class="ng-star-inserted">Integration</span>
-    <p align="right"><button mat-button>Update</button></p>
+    <span class="ng-star-inserted">Integration<p align="right"><button mat-button>Update</button></p></span>
     <mat-tab-group>
         <mat-tab label="Dynamics 365">
             <div class="">
                 <mat-grid-list cols="2" rowHeight="4:1">
                     <mat-grid-tile>
                         <mat-form-field class="form-field">
-                            <input matInput placeholder="https://login.salesforce.com" value="ENVIRONMENT URL" required>
+                            <input matInput placeholder="User ID" required>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile>
                         <mat-form-field class="form-field">
-                            <input matInput placeholder="https://login.salesforce.com" value="ENVIRONMENT URL" required>
+                            <input matInput placeholder="Client Secret Key" required>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile>
                         <mat-form-field class="form-field">
-                            <input matInput placeholder="https://login.salesforce.com" value="ENVIRONMENT URL" required>
+                            <input matInput placeholder="Account" required>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile>
                         <mat-form-field class="form-field">
-                            <input matInput placeholder="Enter ID" value="CLIENT ID" required>
+                            <input matInput placeholder="Account Unique Field" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field class="form-field">
+                            <input matInput placeholder="Lead Unique Field" required>
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>
