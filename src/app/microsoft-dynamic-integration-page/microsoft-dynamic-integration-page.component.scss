@@ -5,8 +5,28 @@
     position: relative;
     height: calc(100vh - 48px);
     font-size: 20px;
+    width: calc(100% - 30px);
 }
 
 .form-field {
     width: 60%;
+}
+label{
+    margin:0;
+}
+.button-left{
+    float: right;
+    margin-bottom: 30px;
+}
+.top-space {
+    margin-top: 36px;
+}
+.col-lg-3.description {
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.dynamics-image {
+    width: 24px;
+    margin-right: 10px;
 }
