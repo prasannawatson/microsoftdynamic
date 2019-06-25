@@ -55,6 +55,13 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
+import {
+  HttpClientModule,
+  HttpClient,
+  HttpHeaders,
+  HttpParams
+} from "@angular/common/http";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +77,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatFormFieldModule,
     MatInputModule,
     MatGridListModule,
-    MatButtonModule, MatCheckboxModule,MatTabsModule
+    MatButtonModule, MatCheckboxModule,MatTabsModule,HttpClientModule
   ],  exports: [
     A11yModule,
     CdkStepperModule,
