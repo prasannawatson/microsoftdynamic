@@ -1,45 +1,69 @@
 <div class="cx-setup">
-    <span class="ng-star-inserted">Integration<p align="right"><button mat-button (click)="doGET()" class="btn btn-primary">Update</button></p></span>
-    <mat-tab-group>
-        <mat-tab label="Dynamics 365">
-            <div class="">
-                <mat-grid-list cols="2" rowHeight="4:1">
-                    <mat-grid-tile>
-                        <mat-form-field class="form-field">
-                            <input matInput placeholder="User ID" required>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile>
-                        <mat-form-field class="form-field">
-                            <input matInput placeholder="Client Secret Key" required>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile>
-                        <mat-form-field class="form-field">
-                            <input matInput placeholder="Account" required>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile>
-                        <mat-form-field class="form-field">
-                            <input matInput placeholder="Account Unique Field" required>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile>
-                        <mat-form-field class="form-field">
-                            <input matInput placeholder="Lead Unique Field" required>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                </mat-grid-list>
+    <div class="col-lg-12">
+        <span class="ng-star-inserted mat-title">Integration</span>
+        <button class="button-l button-left" mat-raised-button color="primary">Update</button>
+    </div>
+    <mat-tab-group class="cc-boxshadow cc-material-form">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <img src="assets/Dynamic-logo.png" class="dynamics-image" alt="Dynamic" />
+                <span class="dynamic-label">
+            Dynamics 365
+           </span>
+            </ng-template>
+            <div class="row col-lg-12  top-space">
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <label class="mat-subheading-1">Username </label>
+                            <mat-form-field floatLabel="never">
+                                <mat-label class="mat-body-1 italics">First name</mat-label>
+                                <input class="" matInput placeholder="Input">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="mat-subheading-1">Password </label>
+                            <mat-form-field floatLabel="never">
+                                <mat-label class="mat-body-1 italics">First name</mat-label>
+                                <input class="" matInput placeholder="Input">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <!-- <button class="button-l" mat-raised-button color="primary">Connect</button> -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <label class="mat-subheading-1">Secret Key </label>
+                            <mat-form-field floatLabel="never">
+                                <mat-label class="mat-body-1 italics">First name</mat-label>
+                                <input class="" matInput placeholder="Input">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="mat-subheading-1">ENVIRONMENT </label>
+                            <mat-form-field floatLabel="never">
+                                <mat-label class="mat-body-1 italics">First name</mat-label>
+                                <input class="" matInput placeholder="Input">
+                            </mat-form-field>
+
+                        </div>
+                        <div class="col-lg-2 top-space">
+                            <button class="button-l" mat-raised-button color="primary">Connect</button>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-3 description">
+                    <div class="">
+                        <span class="mat-subheading-1">Microsoft-Dyanmics</span>
+                        <p class="mat-body-1">Invite your customers to take surveys you have created in Question Builder
+                        </p>
+                    </div>
+                </div>
             </div>
         </mat-tab>
-        <mat-tab label="Second"> Content 2 </mat-tab>
+        <!-- <mat-tab label="Second"> Content 2 </mat-tab> -->
     </mat-tab-group>
-</div>
-<div class="wrap">
-    <div class="integrations-section ng-star-inserted">
-        <div class="col-md-12 col-sm-12 col-xs-12 cc-boxshadow cc-material-form">
-            <mat-tab-group class="mat-tab-group mat-primary">
-            </mat-tab-group>
-        </div>
-    </div>
 </div>
