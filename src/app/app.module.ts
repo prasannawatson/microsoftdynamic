@@ -54,6 +54,10 @@ import { MicrosoftDynamicMenuComponent } from './microsoft-dynamic-menu/microsof
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+
+
 
 import {
   HttpClientModule,
@@ -76,7 +80,9 @@ import {
     MatRadioModule,
     MatFormFieldModule,
     MatInputModule,
+    ReactiveFormsModule,
     MatGridListModule,
+    MatSlideToggleModule,
     MatButtonModule, MatCheckboxModule,MatTabsModule,HttpClientModule
   ],  exports: [
     A11yModule,

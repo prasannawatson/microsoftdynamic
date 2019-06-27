@@ -11,55 +11,116 @@
             Dynamics 365
            </span>
             </ng-template>
-            <div class="row col-lg-12  top-space">
-                <div class="col-lg-9">
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <label class="mat-subheading-1">Username </label>
-                            <mat-form-field floatLabel="never">
-                                <mat-label class="mat-body-1 italics">First name</mat-label>
-                                <input class="" matInput placeholder="Input">
-                            </mat-form-field>
+            <form [formGroup]="myform" novalidate>
+                <div class="row col-lg-12  top-space">
+                    <div class="col-lg-9">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <label class="mat-subheading-1">Username </label>
+                                <mat-form-field floatLabel="never">
+                                    <mat-label class="mat-body-1 italics">Username</mat-label>
+                                    <input id="username" class="" matInput placeholder="Input" formControlName="username">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="mat-subheading-1">Password </label>
+                                <mat-form-field floatLabel="never">
+                                    <mat-label class="mat-body-1 italics">Password</mat-label>
+                                    <input class="" matInput placeholder="Input" formControlName="password">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-2">
+                                <!-- <button class="button-l" mat-raised-button color="primary">Connect</button> -->
+                            </div>
                         </div>
-                        <div class="col-lg-5">
-                            <label class="mat-subheading-1">Password </label>
-                            <mat-form-field floatLabel="never">
-                                <mat-label class="mat-body-1 italics">First name</mat-label>
-                                <input class="" matInput placeholder="Input">
-                            </mat-form-field>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <label class="mat-subheading-1">Secret Key </label>
+                                <mat-form-field floatLabel="never">
+                                    <mat-label class="mat-body-1 italics">Secret Key</mat-label>
+                                    <input class="" matInput placeholder="Input" formControlName="secretkey">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="mat-subheading-1">ENVIRONMENT </label>
+                                <mat-form-field floatLabel="never">
+                                    <mat-label class="mat-body-1 italics">ENVIRONMENT</mat-label>
+                                    <input class="" matInput placeholder="Input" formControlName="environment">
+                                </mat-form-field>
+
+                            </div>
+                            <div class="col-lg-2 top-space" id="connect-toggle-div" style="display: none">
+                                <label class="mat-subheading-1">Enable </label>
+                                <mat-slide-toggle color="primary" checked (change)="onChangeEnable($event)"></mat-slide-toggle>
+                            </div>
+                            <div class="col-lg-2 top-space" id="connect-button-div">
+                                <button id="connect-button" class="button-m" mat-raised-button color="primary" (click)="onSubmit()">Connect</button>
+                            </div>
+
+
                         </div>
-                        <div class="col-lg-2">
-                            <!-- <button class="button-l" mat-raised-button color="primary">Connect</button> -->
+
+
+                    </div>
+                    <div class="col-lg-3 description">
+                        <div class="">
+                            <span class="mat-subheading-1">Microsoft-Dyanmics</span>
+                            <p class="mat-body-1">Invite your customers to take surveys you have created in Question Builder
+                            </p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <label class="mat-subheading-1">Secret Key </label>
-                            <mat-form-field floatLabel="never">
-                                <mat-label class="mat-body-1 italics">First name</mat-label>
-                                <input class="" matInput placeholder="Input">
-                            </mat-form-field>
-                        </div>
-                        <div class="col-lg-5">
-                            <label class="mat-subheading-1">ENVIRONMENT </label>
-                            <mat-form-field floatLabel="never">
-                                <mat-label class="mat-body-1 italics">First name</mat-label>
-                                <input class="" matInput placeholder="Input">
-                            </mat-form-field>
-
-                        </div>
-                        <div class="col-lg-2 top-space">
-                            <button class="button-m" mat-raised-button color="primary">Connect</button>
-                        </div>
-                    </div>
-
-
                 </div>
-                <div class="col-lg-3 description">
-                    <div class="">
-                        <span class="mat-subheading-1">Microsoft-Dyanmics</span>
-                        <p class="mat-body-1">Invite your customers to take surveys you have created in Question Builder
-                        </p>
+            </form>
+            <div class="col-lg-9" style="display: none" id="logged-block">
+                <div class="row">
+                    <div class="col-lg-5" id="select-entity-div">
+                        <label class="mat-subheading-1">Select D365 Entity </label>
+                        <mat-form-field floatLabel="never">
+                            <mat-label class="mat-body-1 italics">Entities</mat-label>
+                            <select matNativeControl required [disabled]="entityDisable" id="select-entity" (change)="onChangeEntity($event)">
+                                <option value="0" selected disabled>Select Entity</option>
+                                <option *ngFor="let e of entities" [value]="e.Value">
+                                            {{ e.Name }}
+                                </option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row" id="mapping-text">
+                    <div class="col-lg-5">
+                        <label class="mat-subheading-1">MAP CLOUDCHERRY TO D365 FOR ENTITIES</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5" id="select-questiontag-div">
+                        <label class="mat-subheading-1">Select CC Question Tag </label>
+                        <mat-form-field floatLabel="never">
+                            <mat-label class="mat-body-1 italics"></mat-label>
+                            <select matNativeControl required id="select-questiontag" (change)="disable = false">
+                                    <option value="0" selected disabled>Select Question Tag</option>
+                                    <option *ngFor="let note of notes" [value]="note.Value">
+                                        {{ note.Name }}
+                                </option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+                    <div class="paddingtop13">
+                        <i aria-hidden="true" class="fa fa-arrow-circle-right rightarrowactive" id="rightarrowactive"></i>
+                    </div>
+                    <div class="col-lg-5" style="display: block" id="select-field-div">
+                        <label class="mat-subheading-1">Select D365 field </label>
+                        <mat-form-field floatLabel="never">
+                            <mat-label class="mat-body-1 italics"></mat-label>
+                            <select matNativeControl required id="select-field" (change)="disable = false">
+                                <option value="0" selected disabled>Select Field</option>
+                                <option *ngFor="let field of fields" [value]="field">
+                                    {{ field.split('~')[0] }}
+                                </option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-1 top-space" id="mapping-button-div">
+                        <button id="mapping-button" [disabled]="disable" class="button-m" mat-raised-button color="primary" (click)="addMapping()">Add Mapping</button>
                     </div>
                 </div>
             </div>
