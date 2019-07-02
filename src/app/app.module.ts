@@ -56,7 +56,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-
+import {DialogOverviewComponent} from './dialog-overview/dialog-overview.component';
+import { FormsModule } from '@angular/forms';
 
 
 import {
@@ -71,17 +72,22 @@ import {
     AppComponent,
     MicrosoftDynamicIntegrationPageComponent,
     MicrosoftDynamicHeaderComponent,
-    MicrosoftDynamicMenuComponent
+    MicrosoftDynamicMenuComponent,
+    DialogOverviewComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     MatRadioModule,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    FormsModule,
     MatGridListModule,
+    MatTableModule,
+    MatPaginatorModule,
     MatSlideToggleModule,
     MatButtonModule, MatCheckboxModule,MatTabsModule,HttpClientModule
   ],  exports: [
@@ -126,9 +132,10 @@ import {
     MatTooltipModule,
     MatTreeModule,
     PortalModule,
-    ScrollingModule,
+    ScrollingModule
   ],
   providers: [],
+  entryComponents: [DialogOverviewComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

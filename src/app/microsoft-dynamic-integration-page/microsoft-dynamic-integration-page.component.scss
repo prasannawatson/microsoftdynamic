@@ -12,6 +12,10 @@
     width: 60%;
 }
 
+.form-bottom {
+    padding-bottom: -50px;
+}
+
 label {
     margin: 0;
 }
@@ -22,7 +26,7 @@ label {
 }
 
 .top-space {
-    margin-top: 55px;
+    margin-top: 35px;
 }
 
 .col-lg-3.description {
@@ -38,4 +42,28 @@ label {
 
 .paddingtop13 {
     padding-top: 40px;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+td,
+th {
+    width: 25%;
+}
+
+.loading {
+    display: inline-block;
+    border-bottom: 1px solid #efefef;
+    position: relative;
+}
+
+.pointercursor {
+    padding-right: 15px
 }
