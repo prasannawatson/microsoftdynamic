@@ -1,7 +1,7 @@
-<h5 *ngIf="!data.enabled">Disable</h5>
-<h5 *ngIf="!data.enabled">Are you sure you want to disable?</h5>
-<h5 *ngIf="data.enabled">Enable</h5>
-<h5 *ngIf="data.enabled">Are you sure you want to enable?</h5>
+<h5 *ngIf="!data.enable">Disable</h5>
+<h5 *ngIf="!data.enable">Are you sure you want to disable?</h5>
+<h5 *ngIf="data.enable">Enable</h5>
+<h5 *ngIf="data.enable">Are you sure you want to enable?</h5>
 <div mat-dialog-actions>
     <button mat-button (click)="onClick(true)">Ok</button>
     <button mat-button cdkFocusInitial (click)="onClick(false)">Cancel </button>

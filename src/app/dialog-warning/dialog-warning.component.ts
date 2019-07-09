@@ -3,22 +3,21 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 
 export interface DialogData {
   event: any;
-  enable: boolean;
 }
 
 @Component({
-  selector: 'app-dialog-overview',
-  templateUrl: './dialog-overview.component.html',
-  styleUrls: ['./dialog-overview.component.scss']
+  selector: 'app-dialog-warning',
+  templateUrl: './dialog-warning.component.html',
+  styleUrls: ['./dialog-warning.component.scss']
 })
-export class DialogOverviewComponent implements OnInit {
+export class DialogWarningComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<DialogOverviewComponent>,
+  constructor(public dialogRef: MatDialogRef<DialogWarningComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
-  ngOnInit() {
+  ngOnInit() { 
   }
-
+  
   onClick(status: boolean): void {
     this.dialogRef.close(status);
   }

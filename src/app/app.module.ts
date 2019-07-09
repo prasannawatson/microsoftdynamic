@@ -66,6 +66,7 @@ import {
   HttpHeaders,
   HttpParams
 } from "@angular/common/http";
+import { DialogWarningComponent } from './dialog-warning/dialog-warning.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import {
     MicrosoftDynamicIntegrationPageComponent,
     MicrosoftDynamicHeaderComponent,
     MicrosoftDynamicMenuComponent,
-    DialogOverviewComponent
+    DialogOverviewComponent,
+    DialogWarningComponent
   ],
   imports: [
     BrowserModule,
@@ -89,6 +91,7 @@ import {
     MatTableModule,
     MatPaginatorModule,
     MatSlideToggleModule,
+    MatIconModule,
     MatButtonModule, MatCheckboxModule,MatTabsModule,HttpClientModule
   ],  exports: [
     A11yModule,
@@ -135,7 +138,7 @@ import {
     ScrollingModule
   ],
   providers: [],
-  entryComponents: [DialogOverviewComponent],
+  entryComponents: [DialogOverviewComponent, DialogWarningComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
