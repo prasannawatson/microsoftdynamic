@@ -88,6 +88,20 @@
                             </mat-form-field>
                         </div>
                     </div>
+                    <div class="row" style="padding-bottom: 10px;" *ngIf="entityValue == 'account'">
+                        <div class="col-lg-5" id="select-entity-div">
+                            <span class="mat-subheading-1">Make Default 
+                                <mat-checkbox [(ngModel)]="defaultaccount" (click)="onMakeDefault()" color="primary" style="padding-left: 10px; padding-top: 4px;"></mat-checkbox>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-bottom: 10px;" *ngIf="entityValue == 'contact'">
+                        <div class="col-lg-5" id="select-entity-div">
+                            <span class="mat-subheading-1">Make Default 
+                                <mat-checkbox [(ngModel)]="defaultcontact" (click)="onMakeDefault()" color="primary" style="padding-left: 10px; padding-top: 4px;"></mat-checkbox>
+                            </span>
+                        </div>
+                    </div>
                     <div class="row" id="mapping-text">
                         <div class="col-lg-5">
                             <label class="mat-subheading-1">MAP CLOUDCHERRY TO D365 FOR ENTITIES</label>
@@ -141,7 +155,7 @@
                             <table class="mat-elevation-z8" [dataSource]="dataSource" mat-table matSort>
 
                                 <ng-container matColumnDef="questiontag">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> CLOUDCHERRY QUESTION TAG </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> CC QUESTION TAG </th>
                                     <td mat-cell *matCellDef="let element"> {{element.questiontag}} </td>
                                 </ng-container>
 
@@ -155,12 +169,20 @@
                                 <ng-container matColumnDef="action">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ACTION </th>
                                     <td mat-cell *matCellDef="let element">
-                                        <span class="pointercursor" title="Click to edit" (click)="onEdit($event)">
+                                        <span class="pointercursor" color="primary" title="Click to edit" (click)="onEdit($event)">
                                             <i class="fal fa-edit"></i>
                                     </span>
-                                        <span class="pointercursor" (click)="onDelete($event)" title="Click to delete">
+                                        <span class="pointercursor" color="primary" (click)="onDelete($event)" title="Click to delete">
                                         <i class="fal fa-trash-alt"></i>
                                     </span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="uniqueidentifier">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> UNIQUE IDENTIFIER </th>
+                                    <td mat-cell *matCellDef="let element" style="text-align: center" id="unique-check">
+                                        <mat-checkbox [(ngModel)]="emailcheck" color="primary" (click)="onCheck($event)" *ngIf="element.questiontag == 'Email'"></mat-checkbox>
+                                        <mat-checkbox [(ngModel)]="mobilecheck" color="primary" (click)="onCheck($event)" *ngIf="element.questiontag == 'Mobile Number'"></mat-checkbox>
                                     </td>
                                 </ng-container>
 
