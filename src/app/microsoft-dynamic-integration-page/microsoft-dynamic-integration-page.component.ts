@@ -444,6 +444,8 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     //addBody[field["value"]] = questiontag["value"];
+    let oMappingError = document.getElementById('mapping-error');
+    oMappingError.style.display = "none";
     } else {
       let oMappingError = document.getElementById('mapping-error');
       oMappingError.style.display = "block";
