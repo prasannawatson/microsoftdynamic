@@ -47,21 +47,21 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
   dataTypeMapping: any = {"TEXT": "string|||textarea|||email|||phone|||url|||reference", 
                           "MULTILINETEXT": "string|||textarea|||url|||reference",
                           "MULTISELECT": "string|||textarea",
-                          "NUMBER": "'number|||double|||int",
-                          "STAR-5": "number|||double|||int",
-                          "SMILE-5": "number|||double|||int",
-                          "SCALE": "number|||double|||int",
+                          "NUMBER": "'number|||double|||int|||integer",
+                          "STAR-5": "number|||double|||int|||integer",
+                          "SMILE-5": "number|||double|||int|||integer",
+                          "SCALE": "number|||double|||int|||integer",
                           "SELECT": "string|||textarea",
                           "DROPDOWN": "picklist",
                           "SINGLESELECT": "picklist",
                           "DATE": "datetime",
-                          "SLIDER": "number|||double|||int",
+                          "SLIDER": "number|||double|||int|||integer ",
                         };
   keyEntityMapping: any = {"account": "MSDynamicAccount", "contact": "MSDynamicContact", "incident":"MSDynamicIncident", "lead":"MSDynamicLead", "MarketingList":"MSDynamicMarketingList", "cc_cloudcherry_survey":"MSDynamicCloudCherry"}
   //dataSource = ELEMENT_DATA;
   dataSource: MatTableDataSource<PeriodicElement>;
   myform: FormGroup;
-  apiRoot: string = "http://52.172.1.187:8090";
+  apiRoot: string = "https://52.172.1.187:8090";
   authenticate: boolean = false;
   entities: any = [];
   notes: any = [];
@@ -96,7 +96,6 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
     });
     let url = `${this.apiRoot}/api/msdynamics/GetCredentials/${username}`;
     this.http.get(url).toPromise().then(res => {
-      debugger;
       if (res) {
         this.authenticate = true;
         this.myform.value["baseaddress"] = res["crm_API_BaseAddress"];
@@ -235,8 +234,8 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
           this.http.get(url).toPromise().then(res => {
           if(res) {
             this.entityDisable = false;
-            this.entityFieldMapping[event.target.value] = res;
-            this.fields = res;
+            this.entityFieldMapping[event.target.value] = res["fields"];
+            this.fields = res["fields"];
           } else {
             this.entityDisable = false;
           }
@@ -374,7 +373,7 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
           for(let entity of this.entities) {
             this.entityFieldMapping[entity.Value] = [];
           }
-          this.entityFieldMapping["account"] = res[2];
+          this.entityFieldMapping["account"] = res[2]["fields"];
           this.fields = this.entityFieldMapping["account"];
           let oConnectButton = document.getElementById('connect-button');
           oConnectButton.style.display = "none";
@@ -416,7 +415,6 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
   }
 
   async addMapping() {
-    debugger;
     this.entityUpdated = true;
     let questiontag = document.getElementById('select-questiontag');
     let field = document.getElementById('select-field');
@@ -453,7 +451,6 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
   }
 
   onDelete(event: any) {
-    debugger;
     this.entityUpdated = true;
     let row = event.target.parentElement.parentElement.parentElement.children;
     let qtag = row[0].innerText;
