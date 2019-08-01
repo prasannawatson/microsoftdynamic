@@ -1,0 +1,92 @@
+<span class="mat-title">Send To Dynamics 365</span>
+<div class="col-lg-6 top-space" id="existing-toggle-div">
+    <label class="mat-subheading-1">Use existing planned campaigns: </label>
+    <mat-slide-toggle id="toggle-campaign-button" [(ngModel)]="existingcampaignChecked" [ngModelOptions]="{standalone: true}" color="primary" (change)="onChangeExisting($event)"></mat-slide-toggle>
+</div>
+<form [formGroup]="campaignform" novalidate>
+    <div class="row col-lg-12  top-space" style="display: block;" id="new-campaign">
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-lg-5">
+                    <label class="mat-subheading-1" required>Campaign Name </label>
+                    <mat-form-field floatLabel="never">
+                        <mat-label class="mat-body-1 italics">Enter Name</mat-label>
+                        <input id="campaignname" class="" matInput placeholder="Input" formControlName="campaignname">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <label class="mat-subheading-1">List Type </label>
+                    <mat-form-field floatLabel="never">
+                        <mat-label class="mat-body-1 italics">Select List</mat-label>
+                        <select matNativeControl required id="listtype" formControlName="listtype">
+                        <option value="static" selected >Static</option>
+                        <option value="dynamics" selected >Dynamics</option>
+                      </select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <label class="mat-subheading-1">Targeted At </label>
+                    <mat-form-field floatLabel="never">
+                        <mat-label class="mat-body-1 italics">Select Targeted At</mat-label>
+                        <select matNativeControl required id="targetedat" formControlName="targetedat">
+                            <option value="account" selected >Account</option>
+                            <option value="contact" selected >Contact</option>
+                            <option value="lead" selected >Lead</option>
+                        </select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <label class="mat-subheading-1">Owner </label>
+                    <mat-form-field floatLabel="never">
+                        <mat-label class="mat-body-1 italics">Enter Owner</mat-label>
+                        <input id="owner" class="" matInput placeholder="Input" formControlName="owner">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 top-space" id="cancel-button-div">
+                    <button id="cancel-button" class="button-m" mat-raised-button color="primary" (click)="onCancel()">Cancel</button>
+                </div>
+                <div class="col-lg-3 top-space" id="send-button-div">
+                    <button id="send-button" class="button-m" mat-raised-button color="primary" (click)="onSend(false)">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form [formGroup]="campaignformexisting" novalidate>
+    <div class="row col-lg-12  top-space" style="display: none;" id="existing-campaign">
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-lg-5">
+                    <span class="mat-headline">Refresh   <span style="cursor: pointer; color: #0091ea;" (click)="refreshCampaign()"><i class="fa fa-refresh" style="font-size:20px" id="refresh-icon"></i></span></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 top-space">
+                    <label class="mat-subheading-1">Campaign Name </label>
+                    <mat-form-field floatLabel="never">
+                        <mat-label class="mat-body-1 italics">Select campaign</mat-label>
+                        <select matNativeControl required formControlName="campaignnameexisting">
+                        <option *ngFor="let item of campaignList" [value]="item">{{item}}</option>
+                    </select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 top-space" id="cancelexisting-button-div">
+                    <button id="cancelexisting-button" class="button-m" mat-raised-button color="primary" (click)="onCancelExisting()">Cancel</button>
+                </div>
+                <div class="col-lg-3 top-space" id="sendexisting-button-div">
+                    <button id="sendexisting-button" class="button-m" mat-raised-button color="primary" (click)="onSendExisting(false)">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

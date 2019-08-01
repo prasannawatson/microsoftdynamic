@@ -67,6 +67,7 @@ import {
   HttpParams
 } from "@angular/common/http";
 import { DialogWarningComponent } from './dialog-warning/dialog-warning.component';
+import { DialogCampaignsComponent } from './dialog-campaigns/dialog-campaigns.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { DialogWarningComponent } from './dialog-warning/dialog-warning.componen
     MicrosoftDynamicHeaderComponent,
     MicrosoftDynamicMenuComponent,
     DialogOverviewComponent,
-    DialogWarningComponent
+    DialogWarningComponent,
+    DialogCampaignsComponent
   ],
   imports: [
     BrowserModule,
@@ -138,7 +140,7 @@ import { DialogWarningComponent } from './dialog-warning/dialog-warning.componen
     ScrollingModule
   ],
   providers: [],
-  entryComponents: [DialogOverviewComponent, DialogWarningComponent],
+  entryComponents: [DialogOverviewComponent, DialogWarningComponent, DialogCampaignsComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

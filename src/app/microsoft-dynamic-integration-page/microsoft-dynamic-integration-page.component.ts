@@ -17,6 +17,7 @@ import { DialogOverviewComponent } from '../dialog-overview/dialog-overview.comp
 import { forkJoin } from 'rxjs';
 import { promise } from 'protractor';
 import { DialogWarningComponent } from '../dialog-warning/dialog-warning.component';
+import { DialogCampaignsComponent } from '../dialog-campaigns/dialog-campaigns.component';
 
 export interface DialogData {
   enabled: boolean;
@@ -27,6 +28,7 @@ export interface PeriodicElement {
   field: string;
   fieldvalue: string;
   questionvalue: string;
+  uniquefieldselected: boolean;
 }
 
 var ELEMENT_DATA: PeriodicElement[] = [];
@@ -57,11 +59,11 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
                           "DATE": "datetime",
                           "SLIDER": "number|||double|||int|||integer ",
                         };
-  keyEntityMapping: any = {"account": "MSDynamicAccount", "contact": "MSDynamicContact", "incident":"MSDynamicIncident", "lead":"MSDynamicLead", "MarketingList":"MSDynamicMarketingList", "cc_cloudcherry_survey":"MSDynamicCloudCherry"}
+  keyEntityMapping: any = {"account": "MSDynamicAccount", "contact": "MSDynamicContact", "incident":"MSDynamicIncident", "lead":"MSDynamicLead", "list":"MSDynamicMarketingList", "cc_cloudcherry_survey":"MSDynamicCloudCherry", "opportunity": "MSDynamicOpportunity"}
   //dataSource = ELEMENT_DATA;
   dataSource: MatTableDataSource<PeriodicElement>;
   myform: FormGroup;
-  apiRoot: string = "https://52.172.1.187:8090";
+  apiRoot: string = "https://solutions-dev.getcloudcherry.com";
   authenticate: boolean = false;
   entities: any = [];
   notes: any = [];
@@ -78,9 +80,15 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
   emailcheck: boolean;
   mobilecheck: boolean;
   uniquefield: string;
+  uniqueAccountField: string;
+  uniqueContactField: string;
+  uniqueLeadField: string;
+  uniqueEntity: string;
   defaultaccount: boolean;
   defaultcontact: boolean;
   entityUpdated: boolean = false;
+  defaultentityUpdated: boolean = false;
+
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -108,7 +116,11 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
           secretkey: new FormControl(res["crm_ClientSecretKey"], Validators.required),
           environment: new FormControl(res["crm_DirectoryUrl"], Validators.required)
         });
-        this.uniquefield = res["crm_ContactOrAccountUniqueField"].split('~')[0];
+        this.uniquefield = res["crm_ContactOrAccountUniqueField"];
+        this.uniqueAccountField = res["crm_AccountUniqueField"];
+        this.uniqueContactField = res["crm_ContactUniqueField"];
+        this.uniqueLeadField = res["crm_LeadUniqueField"];
+        this.uniqueEntity = res["crm_ContactoOrAccount"];
         if(res["crm_ContactoOrAccount"] == "contact") {
           this.defaultcontact = true;
           this.defaultaccount = false;
@@ -160,6 +172,16 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
         event.target.value = this.entityValue;
       } else {
         this.entityValue = event.target.value;
+        if (this.defaultentityUpdated) {
+          if (this.defaultaccount) {
+            this.defaultaccount = false;
+            this.defaultcontact = true;
+          } else {
+            this.defaultaccount = true;
+            this.defaultcontact = false;
+          }
+        }
+        this.defaultentityUpdated = false;
         //addBody = {};
         //deleteBody = {};
         this.entityUpdated = false;
@@ -180,8 +202,8 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
           if(res) {
             console.log(res);
             this.entityDisable = false;
-            this.entityFieldMapping[event.target.value] = res;
-            this.fields = res;
+            this.entityFieldMapping[event.target.value] = res["fields"];
+            this.fields = res["fields"];
           } else {
             this.entityDisable = false;
           }
@@ -198,7 +220,13 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
           Object.keys(res["QuestionIdMappings"]).forEach(key => {
           var quesTag = questionnoteKeyMaping[res["QuestionIdMappings"][key]];
           var fieldName = key.split('~')[0];
-          var data : PeriodicElement = {questiontag: quesTag, field: fieldName, fieldvalue: key, questionvalue: res["QuestionIdMappings"][key]};
+          var selected: boolean;
+          if ((this.entityValue == 'account' && fieldName.toLowerCase() == this.uniqueAccountField.split('~')[0].toLowerCase()) || (this.entityValue == 'contact' && fieldName.toLowerCase() == this.uniqueContactField.split('~')[0].toLowerCase()) || (this.entityValue == 'lead' && fieldName.toLowerCase() == this.uniqueLeadField.split('~')[0].toLowerCase())) {
+            selected = true;
+          } else {
+            selected = false;
+          }
+          var data : PeriodicElement = {questiontag: quesTag, field: fieldName, fieldvalue: key, questionvalue: res["QuestionIdMappings"][key], uniquefieldselected: selected};
           newdataSource.push(data);
         });
         this.dataSource = new MatTableDataSource([...newdataSource]);
@@ -216,9 +244,8 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
 
   async onChangeEntity(event: any) {
     if(!this.entityUpdated) {
-      this.entityValue = event.target.value;
-        addBody = {};
-        deleteBody = {};
+        this.entityValue = event.target.value;
+        var flag = false;
         let questiontag = document.getElementById('select-questiontag');
         let fieldTag = document.getElementById('select-field');
         questiontag["value"] = "0";
@@ -229,15 +256,20 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
         this.fields = null;
         if(this.entityFieldMapping[event.target.value].length != 0) {
           this.fields = this.entityFieldMapping[event.target.value];
+          flag = true;
         } else {
           let url = `${this.apiRoot}/api/msdynamics/crm/GetEntityFields/${event.target.value}/${username}`;
           this.http.get(url).toPromise().then(res => {
           if(res) {
-            this.entityDisable = false;
+            if (flag){
+              this.entityDisable = false;
+            } else {
+              flag = true;
+            }
             this.entityFieldMapping[event.target.value] = res["fields"];
             this.fields = res["fields"];
           } else {
-            this.entityDisable = false;
+            this.entityDisable = true;
           }
         }, error => {
           console.log(error.status);
@@ -248,12 +280,22 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
       ELEMENT_DATA = [];
       let url = `${this.apiRoot}/api/msdynamics/GetMapping/${username}/${this.keyEntityMapping[event.target.value]}`;
       this.http.get(url).toPromise().then(res => {
-        if(res) {
+        if (flag){
           this.entityDisable = false;
+        } else {
+          flag = true;
+        }
+        if(res) {
           Object.keys(res["QuestionIdMappings"]).forEach(key => {
           var quesTag = questionnoteKeyMaping[res["QuestionIdMappings"][key]];
           var fieldName = key.split('~')[0];
-          var data : PeriodicElement = {questiontag: quesTag, field: fieldName, fieldvalue: key, questionvalue: res["QuestionIdMappings"][key]};
+          var selected: boolean;
+              if ((this.entityValue == 'account' && fieldName.toLowerCase() == this.uniqueAccountField.split('~')[0].toLowerCase()) || (this.entityValue == 'contact' && fieldName.toLowerCase() == this.uniqueContactField.split('~')[0].toLowerCase()) || (this.entityValue == 'lead' && fieldName.toLowerCase() == this.uniqueLeadField.split('~')[0].toLowerCase())) {
+                selected = true;
+              } else {
+                selected = false;
+              }
+          var data : PeriodicElement = {questiontag: quesTag, field: fieldName, fieldvalue: key, questionvalue: res["QuestionIdMappings"][key], uniquefieldselected: selected};
           ELEMENT_DATA.push(data);
         });
         this.dataSource = new MatTableDataSource([...ELEMENT_DATA]);
@@ -264,6 +306,7 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
       }
     }, error => {
       console.log(error.status);
+      this.entityDisable = false;
     });
     } else {
       this.openWarning(event);
@@ -323,13 +366,14 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
       let url = `${this.apiRoot}/api/msdynamics/Authenticate`;
       $("#comment-list").after($('<div class="loading" style="font-size: medium;text-align: center; font-family: sans-serif !important;"><i class="fa fa-spinner fa-spin"></i> Loading..</div>').fadeIn('slow')).data("loading", true);
       if (!this.authenticate) {
-        await this.http.post(url, JSON.parse(JSON.stringify(connectBody))).toPromise().then(res => {
+        var result = await this.http.post(url, JSON.parse(JSON.stringify(connectBody))).toPromise().then(res => {
           if(res) {
             this.authenticate = true;
             for(let x in this.myform.controls) {
               this.myform.controls[x].disable();
             }
-          } else {
+          this.apiCalls();
+      } else {
             //todo
             this.authenticate = false;
             this.connectButtonDisable = false;
@@ -343,9 +387,15 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
             $(this).remove();
             alert("Bad request.");
           });
+          this.authenticate = false;
+          this.connectButtonDisable = false;
+          for(let x in this.myform.controls) {
+            this.myform.controls[x].enable();
+          }
         });
-      } 
-      this.apiCalls();
+      } else {
+        this.apiCalls();
+      }
     }
   }
 
@@ -385,20 +435,26 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
             Object.keys(res[3]["QuestionIdMappings"]).forEach(key => {
               var quesTag = questionnoteKeyMaping[res[3]["QuestionIdMappings"][key]];
               var fieldname = key.split('~')[0];
-              var data : PeriodicElement = {questiontag: quesTag, field: fieldname, fieldvalue: key, questionvalue: res[3]["QuestionIdMappings"][key]};
+              var selected: boolean;
+              if ((this.entityValue == 'account' && fieldname.toLowerCase() == this.uniqueAccountField.split('~')[0].toLowerCase()) || (this.entityValue == 'contact' && fieldname.toLowerCase() == this.uniqueContactField.split('~')[0].toLowerCase()) || (this.entityValue == 'lead' && fieldname.toLowerCase() == this.uniqueLeadField.split('~')[0].toLowerCase())) {
+                selected = true;
+              } else {
+                selected = false;
+              }
+              var data : PeriodicElement = {questiontag: quesTag, field: fieldname, fieldvalue: key, questionvalue: res[3]["QuestionIdMappings"][key], uniquefieldselected: selected};
               ELEMENT_DATA.push(data);
             });
           }
           this.dataSource = new MatTableDataSource([...ELEMENT_DATA]);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-          if(this.uniquefield == "Email") {
-            this.emailcheck = true;
-            this.mobilecheck = false;
-          } else {
-            this.mobilecheck = true;
-            this.emailcheck = false;
-          }
+          // if(this.uniquefield == "Email") {
+          //   this.emailcheck = true;
+          //   this.mobilecheck = false;
+          // } else {
+          //   this.mobilecheck = true;
+          //   this.emailcheck = false;
+          // }
         }
       }, error => {
         console.log(error.status);
@@ -436,7 +492,7 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
     if (element) {
       ELEMENT_DATA = ELEMENT_DATA.filter(obj => obj != element);
     }
-    var data : PeriodicElement = {questiontag: questionnoteKeyMaping[questiontag["value"]], field: field["value"].split('~')[0], fieldvalue: field["value"], questionvalue: questiontag["value"]};
+    var data : PeriodicElement = {questiontag: questionnoteKeyMaping[questiontag["value"]], field: field["value"].split('~')[0], fieldvalue: field["value"], questionvalue: questiontag["value"], uniquefieldselected: false};
     ELEMENT_DATA.unshift(data);
     this.dataSource = new MatTableDataSource([...ELEMENT_DATA]);
     this.dataSource.paginator = this.paginator;
@@ -504,47 +560,66 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
   }
 
   onUpdate(event: any) {
-    let updateButton = document.getElementById('update-button');
-    updateButton.innerHTML = '<i class="fal fa-spinner fa-spin"></i>';
-    let data = {};
-    let saveCredBody = {};
-    let emailmappedfield = "";
-    let mobilemappedfield = "";
-    let reverse = this.swap(questionnoteKeyMaping);
-    for(var x of this.dataSource.data)
-    {
-      data[x.fieldvalue] = reverse[x.questiontag];
-      if (x.questiontag == "Email")
-      {
-        emailmappedfield = x.fieldvalue;
-      }
-      if (x.questiontag == "Mobile Number") {
-        mobilemappedfield = x.fieldvalue;
+    var count = 0;
+    if (this.entityValue == 'account' || this.entityValue == 'contact' || this.entityValue == 'lead') {
+      for(var row of this.dataSource.filteredData) {
+        if (row.uniquefieldselected) {
+          count++;
+        }
       }
     }
-    saveCredBody["cc_Password"] = "Cloudcherry@123";
-    saveCredBody["cc_AccessToken"] = "";  
-    saveCredBody["cc_BaseAddress"] = "https://api.getcloudcherry.com";
-    saveCredBody["crm_API_BaseAddress"] = this.myform.value["baseaddress"];
-    saveCredBody["crm_App_UserId"] = this.myform.value["userid"];
-    saveCredBody["crm_ClientSecretKey"] = this.myform.value["secretkey"];
-    saveCredBody["crm_DirectoryUrl"] = this.myform.value["environment"];
-    saveCredBody["crm_ContactoOrAccount"] = this.defaultaccount ? "account" : "contact";
-    saveCredBody["crm_ContactOrAccountUniqueField"] = this.mobilecheck ? mobilemappedfield : emailmappedfield;
-    saveCredBody["crm_LeadUniqueField"] = this.mobilecheck ? mobilemappedfield : emailmappedfield;
-    let url = `${this.apiRoot}/api/msdynamics/SaveCredentials/${username}`;
-    this.http.post(url, JSON.parse(JSON.stringify(saveCredBody))).toPromise().then(res => {
-    }, error => {
-      console.log(error.status);
-      updateButton.innerHTML = 'Update';
-    });
-    url = `${this.apiRoot}/api/msdynamics/UpdateMapping/${username}/${this.keyEntityMapping[this.entityValue]}`;
-    this.http.post(url, JSON.parse(JSON.stringify(data))).toPromise().then(res => {
-      updateButton.innerHTML = 'Update';
-    }, error => {
-      console.log(error.status);
-      updateButton.innerHTML = 'Update';
-    });
+    if (((this.entityValue == 'account') || (this.entityValue == 'contact' ) || (this.entityValue == 'lead' )) && count === 0) {
+      alert('Select one unique identifier for the Entity.');
+    } else {
+      let updateButton = document.getElementById('update-button');
+      updateButton.innerHTML = '<i class="fal fa-spinner fa-spin"></i>';
+      let data = {};
+      let saveCredBody = {};
+      let reverse = this.swap(questionnoteKeyMaping);
+      var uniquef: string;
+      for(var x of this.dataSource.data)
+      {
+        data[x.fieldvalue] = reverse[x.questiontag];
+        // if (x.questiontag == "Email")
+        // {
+        //   emailmappedfield = x.fieldvalue;
+        // }
+        // if (x.questiontag == "Mobile Number") {
+        //   mobilemappedfield = x.fieldvalue;
+        // }
+        if (x.uniquefieldselected) {
+          uniquef = x.fieldvalue;
+        }
+      }
+      // saveCredBody["cc_Password"] = "Cloudcherry@123";
+      // saveCredBody["cc_AccessToken"] = "";  
+      // saveCredBody["cc_BaseAddress"] = "https://api.getcloudcherry.com";
+      // saveCredBody["crm_API_BaseAddress"] = this.myform.value["baseaddress"];
+      // saveCredBody["crm_App_UserId"] = this.myform.value["userid"];
+      // saveCredBody["crm_ClientSecretKey"] = this.myform.value["secretkey"];
+      // saveCredBody["crm_DirectoryUrl"] = this.myform.value["environment"];
+      saveCredBody["crm_ContactOrAccount"] = this.defaultaccount ? "account" : "contact";
+      saveCredBody["crm_AccountUniqueField"] = this.uniqueAccountField;
+      saveCredBody["crm_ContactUniqueField"] = this.uniqueContactField;
+      saveCredBody["crm_LeadUniqueField"] = this.uniqueLeadField;
+      let url = `${this.apiRoot}/api/msdynamics/UpdateCredentials/${username}`;
+      this.http.post(url, JSON.parse(JSON.stringify(saveCredBody))).toPromise().then(res => {
+      }, error => {
+        console.log(error.status);
+       //this.uniquefield = uniquef ? uniquef : this.uniquefield;
+       this.uniqueEntity = this.defaultaccount ? "account" : "contact";
+        updateButton.innerHTML = 'Update';
+      });
+      url = `${this.apiRoot}/api/msdynamics/UpdateMapping/${username}/${this.keyEntityMapping[this.entityValue]}`;
+      this.http.post(url, JSON.parse(JSON.stringify(data))).toPromise().then(res => {
+        let oMappingError = document.getElementById('mapping-error');
+        oMappingError.style.display = "none";
+        updateButton.innerHTML = 'Update';
+      }, error => {
+        console.log(error.status);
+        updateButton.innerHTML = 'Update';
+      });
+    }
   }
 
   swap(json: any) {
@@ -558,16 +633,33 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
   onCheck(event: any) {
     this.entityUpdated = true;
     let row = event.currentTarget.parentElement.parentElement.children;
-    let cctag = row[0].innerText;
-    if('Email' === cctag) {
-      this.mobilecheck = false;
-    } else {
-      this.emailcheck = false;
+    let cctag = row[1].innerText;
+    for(var data of this.dataSource.filteredData) {
+      if (cctag != data.field) {
+        data.uniquefieldselected = false;
+      } else {
+        switch (this.entityValue) {
+          case 'account':
+            this.uniqueAccountField = data.fieldvalue;
+            break;
+          case 'contact':
+            this.uniqueContactField = data.fieldvalue;
+            break;
+          case 'lead':
+            this.uniqueLeadField = data.fieldvalue;
+            break;
+        }
+      }
     }
   }
 
   onMakeDefault() {
     this.entityUpdated = true;
+    if(this.defaultentityUpdated) {
+      this.defaultentityUpdated = false;
+    } else {
+      this.defaultentityUpdated = true;
+    }
     if ("account" === this.entityValue) {
       if (this.defaultaccount) {
         this.defaultcontact = true;
@@ -582,7 +674,36 @@ export class MicrosoftDynamicIntegrationPageComponent implements OnInit {
       }
     }
   }
+
+  async onDeactivate(event: any) {
+    let url = `${this.apiRoot}/api/msdynamics/DeleteCredentials/${username}`;
+    await this.http.get(url).toPromise().then(res => {
+      if (res) {
+        this.connectButtonDisable = false;
+        for(let x in this.myform.controls) {
+          this.myform.controls[x].enable();
+        }
+        let oConnectButton = document.getElementById('connect-button');
+        oConnectButton.style.display = "block";
+        let oDivToggle = document.getElementById('connect-toggle-div');
+        oDivToggle.style.display = "none";
+        let oLoggedDiv = document.getElementById('logged-block');
+        oLoggedDiv.style.display = "none";
+      }
+      }, error => {
+    });
+  }
+
+  openCampaignWindow(): void {
+    const dialogRef = this.dialog.open(DialogCampaignsComponent, {
+      width: '100%',
+      height: '85%'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(undefined === result || !result) {
+        console.log(result);
+      }
+    });
+  }
 }
-  
-
-
